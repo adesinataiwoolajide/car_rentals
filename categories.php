@@ -1,8 +1,8 @@
 <?php 
    include("header.php");
-   $brand_name = $_GET['brand_name'];
-   $details = $brand->getSinglebrandsL($brand_name);
-   $brand_id = $details['brand_id'];
+   $category_name = $_GET['category_name'];
+   $details = $categories->getSingleCategoryName($category_name);
+   $category_id = $details['category_id'];
 
     
 ?>
@@ -12,14 +12,14 @@
             <div class="row">
                <div class="col-md-12">
                   <div class="breadcromb-box">
-                     <h3>Car Brand</h3>
+                     <h3>Car Categories</h3>
                      <ul>
                         <li><i class="fa fa-home"></i></li>
                         <li><a href="./">Home</a></li>
-                        <li><i class="fa fa-cogs"></i></li>
-                        <li><a href="brand?brand_name=<?php echo $brand_name ?>"> <?php echo $brand_name ?> Brands</a></li>
+                        <li><i class="fa fa-list"></i></li>
+                        <li><a href="categories?category_name=<?php echo $category_name ?>"> <?php echo $category_name ?> Categories</a></li>
                         <li><i class="fa fa-angle-right"></i></li>
-                        <li>List of <?php echo $brand_name ?> Cars</li>
+                        <li>List of <?php echo $category_name ?> Categories</li>
                      </ul>
                   </div>
                </div>
@@ -71,10 +71,10 @@
                      <div class="car-grid-list">
                         <div class="row">
                         <?php 
-                           if(count ($car->getSingleBrandList($brand_id)) ==0){ ?>
-                              <h4><p style="color:red" align="center"> No car was found for <?php echo $brand_name ?> </p></h4><?php
+                           if(count ($car->getSingleCategoryList($category_id)) ==0){ ?>
+                              <h4><p style="color:red" align="center"> No car was found for <?php echo $category_name ?> </p></h4><?php
                            }else{
-                              foreach($car->getSingleBrandList($brand_id) as $listCars){ ?>
+                              foreach($car->getSingleCategoryList($category_id) as $listCars){ ?>
                                  <div class="col-md-6">
                                     <div class="single-offers">
                                        <div class="offer-image">

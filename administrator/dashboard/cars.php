@@ -29,7 +29,7 @@
                             <p>Please fill the below form to add a new car  </p>
                             <form action="process_car.php" method="POST" enctype="multipart/form-data">
                                 <div class="form-row">
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-md-2">
                                         <label> Car Image </label>
                                         <input type="file" class="form-control form-control-rounded" id=""
                                         required name="file">
@@ -40,6 +40,11 @@
                                         required name="name">
                                     </div>
                                     <div class="form-group col-md-3">
+                                        <label> Price Per Day </label>
+                                        <input type="number" class="form-control form-control-rounded" id="" placeholder="Enter The Price Per Day" 
+                                        required name="price">
+                                    </div>
+                                    <div class="form-group col-md-2">
                                         <label> Car Brand </label>
                                         <select class="form-control form-control-rounded" name="brand_id" required>
                                             <option value="">-- Select The Brand --</option>
@@ -52,7 +57,7 @@
                                         </select>
 
                                     </div>
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-md-2">
                                         <label> Car Category </label>
                                         <select class="form-control form-control-rounded" name="category_id" required>
                                             <option value="">-- Select The Category --</option>
@@ -106,12 +111,13 @@
                 <div class="col-12 col-sm-6 col-md-6 col-xl-12">
                     <div class="card">
                         <div class="card-body">
-                            <table id="basic-datatable" class="table dt-responsive nowrap w-100">
+                            <table id="basic-datatable" class="table-bordered table dt-responsive nowrap w-100">
                                 <thead>
                                     <tr>
                                         <th>S/N</th>
                                         <th> Image</th>
                                         <th> Name</th>
+                                        <th> Amount Per Day</th>
                                         <th> Brand</th>
                                         <th> Category</th>
                                         <th> Capacity</th>
@@ -124,6 +130,7 @@
                                         <th>S/N</th>
                                         <th> Image</th>
                                         <th> Name</th>
+                                        <th> Amount Per Day</th>
                                         <th> Brand</th>
                                         <th> Category</th>
                                         <th> Capacity</th>
@@ -145,6 +152,7 @@
                                             </td>
                                             <td><img src="<?php echo '../../assets/cars/'. $cars['car_image'] ?>" style="width:50px; height:50px" ></td>
                                             <td><?php echo $cars['name'] ?></td>
+                                            <td>&#8358;<?php echo number_format($cars['price']) ?></td>
                                             <td><?php 
                                                 $seeBrand = $brand->getSingleBrandList($brand_id);
                                                 echo $seeBrand['brand_name']; ?>
@@ -162,7 +170,7 @@
                                                     
                                                     <p style="color: red">Booked</p><?php
                                                 }else{
-                                                    echo 'Faulty';
+                                                    echo 'Not Available';
                                                 } ?>
                                         
                                             </td>

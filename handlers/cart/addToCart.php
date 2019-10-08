@@ -1,22 +1,22 @@
 <?php
-require_once("../../dev/autoload.php");
-require_once("../../dev/general/all_purpose_class.php");
+require_once("../../Dev/autoload.php");
+require_once("../../Dev/general/all_purpose_class.php");
 require_once("../../connection/connection.php");
 $all_purpose = new all_purpose($db);
-$product = new Product;
+$car = new Car;
 $return = $_SERVER['HTTP_REFERER'];
     session_start();
     if(isset($_GET['slug'])){
 		$slug = $_GET['slug'];
 		$_SESSION['slug']  = $slug;
 		$_SESSION['amount'] = $_GET['amount'];
-		$productDetails = $product->getSingleProduct($slug);
+		$productDetails = $car->getSingleCar($slug);
 		$_SESSION['quantity'] = $_GET['quantity'];
 
 		$itemArray = array(
 			$productDetails["slug"] => array(
 				'slug' => $_SESSION['slug'],
-				'name'=> $productDetails["product_name"], 
+				'name'=> $productDetails["name"], 
 				'amount'=> $_SESSION['amount'],
 				'quantity' => $_SESSION['quantity'] ,
 			)
@@ -41,10 +41,10 @@ $return = $_SERVER['HTTP_REFERER'];
 		}else{
 			$_SESSION["cart"] = $itemArray;
 		}
-		$_SESSION['success'] = strtoupper(ucwords($productDetails["product_name"])." added to your shopping bag");
+		$_SESSION['success'] = strtoupper(ucwords($productDetails["name"])." added to your booking list");
 		$all_purpose->redirect($return);
 	}else{
-		$_SESSION['error'] = "Please Click On Your Preferred Product";
+		$_SESSION['error'] = "Please Click On Your Preferred Car";
 		$all_purpose->redirect($return);
 	}
 

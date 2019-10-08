@@ -95,7 +95,7 @@
             $query = $db->prepare("SELECT * FROM brands WHERE brand_name=:brand_name");
             $query->bindValue(":brand_name", $brand_name);
 			$query->execute();
-			return $query->fetch();
+			return $query->fetchAll(PDO::FETCH_ASSOC);
 		}
 		public function getSinglebrandsL($brand_name)
 		{

@@ -28,6 +28,7 @@
             $facilities = $all_purpose->sanitizeInput($_POST['facilities']);
             $description = $all_purpose->sanitizeInput($_POST['description']);
             $color = $all_purpose->sanitizeInput($_POST['color']);
+            $price = $all_purpose->sanitizeInput($_POST['price']);
             $status =1;
             $slug = $_POST{'slug'};
 
@@ -35,7 +36,7 @@
                 $details = $car->getSingleCar($slug);
                 $car_image = $details['car_image'];
         
-                if($car->updateCar($name, $brand_id, $category_id, $capacity, $facilities, $description, $car_image, $status, $color, $slug)){
+                if($car->updateCar($name, $brand_id, $category_id, $capacity, $facilities, $description, $car_image, $status, $color, $price, $slug)){
                     $action ="Updated $slug Details";
                     $his = $all_purpose->getUserDetailsandAddActivity($eemail, $action);
                     $_SESSION['success'] = "You Have Updated $slug Details Successfully";
@@ -58,7 +59,7 @@
                 }else{
                     $move= move_uploaded_file($file_tmp, $dir.$file_name);
                     $car_image = $file_name;
-                    if($car->updateCar($name, $brand_id, $category_id, $capacity, $facilities, $description, $car_image, $status, $color, $slug)){
+                    if($car->updateCar($name, $brand_id, $category_id, $capacity, $facilities, $description, $car_image, $status, $color, $price, $slug)){
                         $action ="Updated $slug Details";
                         $his = $all_purpose->getUserDetailsandAddActivity($eemail, $action);
                         $_SESSION['success'] = "You Have Updated $slug Detailsnand changed the car image Successfully";

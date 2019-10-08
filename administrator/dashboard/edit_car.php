@@ -71,7 +71,12 @@
                                             } ?>
                                         </select>
                                     </div>
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-md-2">
+                                        <label> Price Per Day </label>
+                                        <input type="number" class="form-control form-control-rounded" id="" placeholder="Enter The Price Per Day" 
+                                        required name="price" value="<?php echo $details['price'] ?>">
+                                    </div>
+                                    <div class="form-group col-md-2">
                                         <label> Car Color </label>
                                         <select class="form-control form-control-rounded" name="color" required>
                                             <option value="<?php echo $details['color'] ?>"><?php echo $details['color'] ?></option>
@@ -86,7 +91,7 @@
                                             <option value="Purple">Purple</option>
                                         </select>
                                     </div>
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-md-2">
                                         <label> Car Capacity </label>
                                         <input type="number" class="form-control form-control-rounded" id="" 
                                         placeholder="Enter The Car Capacity" required name="capacity" value="<?php echo $details['capacity'] ?>">
@@ -121,6 +126,7 @@
                                         <th>S/N</th>
                                         <th> Image</th>
                                         <th> Name</th>
+                                        <th> Amount Per Day</th>
                                         <th> Brand</th>
                                         <th> Category</th>
                                         <th> Capacity</th>
@@ -133,6 +139,7 @@
                                         <th>S/N</th>
                                         <th> Image</th>
                                         <th> Name</th>
+                                        <th> Amount Per Day</th>
                                         <th> Brand</th>
                                         <th> Category</th>
                                         <th> Capacity</th>
@@ -154,6 +161,7 @@
                                             </td>
                                             <td><img src="<?php echo '../../assets/cars/'. $cars['car_image'] ?>" style="width:50px; height:50px" ></td>
                                             <td><?php echo $cars['name'] ?></td>
+                                            <td>&#8358;<?php echo number_format($cars['price']) ?></td>
                                             <td><?php 
                                                 $seeBrand = $brand->getSingleBrandList($cars['brand_id']);
                                                 echo $seeBrand['brand_name']; ?>

@@ -38,12 +38,13 @@
                 $facilities = $all_purpose->sanitizeInput($_POST['facilities']);
                 $description = $all_purpose->sanitizeInput($_POST['description']);
                 $color = $all_purpose->sanitizeInput($_POST['color']);
+                $price = $all_purpose->sanitizeInput($_POST['price']);
                 $status =1;
                 $slug = $car->generateSlug($name);
                
                 $move= move_uploaded_file($file_tmp, $dir.$file_name);
                 $car_image = $file_name;
-                if($car->addCar($slug, $name, $brand_id, $category_id, $capacity, $facilities, $description, $car_image, $status, $color)){
+                if($car->addCar($slug, $name, $brand_id, $category_id, $capacity, $facilities, $description, $car_image, $status, $color, $price)){
                     $action ="Added $slug To The Car List";
                     $his = $all_purpose->getUserDetailsandAddActivity($eemail, $action);
                     $_SESSION['success'] = "You Have Added $slug To The Car List Successfully";

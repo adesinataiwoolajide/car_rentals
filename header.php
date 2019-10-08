@@ -1,3 +1,19 @@
+<?php
+    session_start();
+   require_once("Dev/autoload.php");
+   require("Dev/general/all_purpose_class.php");
+   require_once 'Dev/registration/customer_registration.php';
+   include_once("connection/connection.php");
+	require('Dev/Database.php');
+   
+   $register = new newCustomerRegistration($db);
+	$all_purpose = new all_purpose($db);
+	$categories = new Categories();
+   $user = new User();
+   $driver = new Driver();
+   $brand = new Brand();
+   $car = new Car();
+    ?>
 <!DOCTYPE html>
 <html lang="en-US">
    <head>
@@ -8,7 +24,7 @@
       <meta name="keyword" content="taxi,car,rent,hire,transport">
       <meta name="author" content="Themescare">
       <!-- Title -->
-      <title>Book Cars</title>
+      <title>Car Bookings</title>
       <!-- Favicon -->
       <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon/favicon-32x32.png">
       <!--Bootstrap css-->
@@ -36,6 +52,7 @@
       <link rel="stylesheet" href="assets/css/style.css">
       <!--Responsive css-->
       <link rel="stylesheet" href="assets/css/responsive.css">
+      <link rel="stylesheet" type="text/css" href="administrator/dashboard/Toast/css/Toast.min.css">
    </head>
    <body>
        
@@ -50,19 +67,33 @@
                   </div>
                </div>
                <div class="col-md-6">
-                  <div class="header-top-right">
-                     <a href="login">
-                     <i class="fa fa-key"></i>
-                     login
-                     </a>
-                     <a href="register">
-                     <i class="fa fa-user"></i>
-                     register
-                     </a>
-                     <a href="#">
-                     <i class="fa fa-user"></i>
-                     dashboard
-                     </a>
+                  <div class="header-top-right"><?php
+                     if(isset($_SESSION['reg_number'])){ 
+                        $reg_number = $_SESSION['reg_number'];
+                         ?>
+                        <a href="logout">
+                        <i class="fa fa-key"></i>
+                        Logout
+                        </a>
+                        
+                        <a href="dashboard">
+                        <i class="fa fa-user"></i>
+                        dashboard
+                        </a><?php 
+                     }else{ ?>
+                        <a href="login">
+                        <i class="fa fa-key"></i>
+                        Login
+                        </a>
+                        <a href="register">
+                        <i class="fa fa-user"></i>
+                        register
+                        </a> 
+                        <!-- <a href="#">
+                        <i class="fa fa-user"></i>
+                        dashboard
+                        </a> --><?php
+                     } ?>
                      
                   </div>
                </div>
@@ -133,12 +164,24 @@
                            <li class=""><a href="team"> Our Team</a></li>
                            
                            <li>
-                              <a href="">Brand</a>
-                              <ul>
-                                 <li><a href="brand">Brand Name</a></li>
+                              <a href="">Brands</a>
+                              <ul><?php
+                                 foreach($brand->getAllBrand() as $listBrand) { ?>
+                                    <li><a href="brand?brand_name=<?php echo $listBrand['brand_name'] ?>"><?php echo $listBrand['brand_name'] ?></a></li><?php 
+                                 } ?>
                                  
                               </ul>
                            </li>
+                           <li>
+                              <a href="">Categories</a>
+                              <ul><?php
+                                 foreach($categories->getAllCategory() as $listCa) { ?>
+                                    <li><a href="categories?category_name=<?php echo $listCa['category_name'] ?>"><?php echo $listCa['category_name'] ?></a></li><?php 
+                                 } ?>
+                                 
+                              </ul>
+                           </li>
+
                            <li class=""><a href="contactus">contact us</a></li>
                            
                            
@@ -154,62 +197,65 @@
                       
                      <!-- Cart Box Start -->
                      <div class="header-cart-box">
-                        <div class="login dropdown">
-                           <button class="dropdown-toggle cart-icon" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                           <span>2</span>
-                           </button>
-                           <div class="dropdown-menu cart-dropdown" aria-labelledby="dropdownMenu1">
-                              <ul class="product_list">
-                                 <li>
-                                    <div class="cart-btn-product">
-                                       <a class="product-remove" href="#">
-                                       <i class="fa fa-times"></i>
-                                       </a>
-                                       <div class="cart-btn-pro-img">
-                                          <a href="#">
-                                          <img src="assets/img/cart-1.png" alt="product" />
-                                          </a>
-                                       </div>
-                                       <div class="cart-btn-pro-cont">
-                                          <h4><a href="#">CAR SPOILERS</a></h4>
-                                          <p>Quantity 2</p>
-                                          <span class="price">
-                                          $29.99
-                                          </span>
-                                       </div>
+                        <div class="login dropdown"> <?php
+                           if(isset($_SESSION['cart'])){?>
+                              <button class="dropdown-toggle cart-icon" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <span><?php
+                                    echo count($_SESSION['cart']);?></span>
+                              </button><?php 
+                              
+                              $cart = $_SESSION['cart'];
+                              $count = count($cart);
+                              if($count > 0){
+                                 $total = array(); ?>
+                                 <div class="dropdown-menu cart-dropdown" aria-labelledby="dropdownMenu1">
+                                    <ul class="product_list">
+                                       <?php
+                                       foreach($cart as $item){  
+                                          $slugO = $item['slug'];
+                                          $show = $car->getSingleCar($item['slug']); ?>
+                                          <li>
+                                             <div class="cart-btn-product">
+                                                <a class="product-remove" href="handlers/cart/removeFromCart.php?slug=<?php echo $item['slug'] ?>">
+                                                <i class="fa fa-times"></i>
+                                                </a>
+                                                <div class="cart-btn-pro-img">
+                                                   <a href="car_details?slug=<?php echo $item['slug'] ?>">
+                                                   <img src="<?php echo 'assets/cars/'. $show['car_image'] ?>" alt="product" />
+                                                   </a>
+                                                </div>
+                                                <div class="cart-btn-pro-cont">
+                                                   <h4><a href="#"><?php $show['name']; ?> </a></h4>
+                                                   <p>Quantity 1</p>
+                                                   <span class="price">
+                                                   &#8358;<?php echo number_format($show['price']) ?><span>/ Day</span>
+                                                   </span>
+                                                </div>
+                                             </div>
+                                          </li><?php 
+                                          $price =$item['amount'];
+                                          $cal = $price * $item['quantity'];
+                                          array_push($total, $price); 
+                                       } ?>
+                                    
+                                    </ul>
+                                    <div class="cart-subtotal">
+                                       
+                                       <p>
+                                          Subtotal :
+                                          <span class="drop-total">&#8358;<?php echo number_format(array_sum($total));?></span>
+                                       </p>
                                     </div>
-                                 </li>
-                                 <li>
-                                    <div class="cart-btn-product">
-                                       <a class="product-remove" href="#">
-                                       <i class="fa fa-times"></i>
-                                       </a>
-                                       <div class="cart-btn-pro-img">
-                                          <a href="#">
-                                          <img src="assets/img/cart-2.jpg" alt="product" />
-                                          </a>
-                                       </div>
-                                       <div class="cart-btn-pro-cont">
-                                          <h4><a href="#">CAR SPOILERS</a></h4>
-                                          <p>Quantity 2</p>
-                                          <span class="price">
-                                          $29.99
-                                          </span>
-                                       </div>
+                                    <div class="cart-btn">
+                                       <a href="shopping-cart" class="cart-btn-1">View Cart</a>
+                                       <a href="checkout" class="cart-btn-2">Checkout</a>
                                     </div>
-                                 </li>
-                              </ul>
-                              <div class="cart-subtotal">
-                                 <p>
-                                    Subtotal :
-                                    <span class="drop-total">$59.98</span>
-                                 </p>
-                              </div>
-                              <div class="cart-btn">
-                                 <a href="shopping-cart" class="cart-btn-1">View Cart</a>
-                                 <a href="checkout" class="cart-btn-2">Checkout</a>
-                              </div>
-                           </div>
+                                 </div><?php
+                              } 
+                           } else{ ?>
+                               <button class="dropdown-toggle cart-icon" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <span>0</span><?php
+                           } ?>
                         </div>
                      </div>
                      <!-- Cart Box End -->

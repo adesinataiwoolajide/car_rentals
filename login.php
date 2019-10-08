@@ -4,23 +4,25 @@
 ?>
        
  <!-- Breadcromb Area Start -->
- <section class="gauto-breadcromb-area section_70">
-         <div class="container">
-            <div class="row">
-               <div class="col-md-12">
-                  <div class="breadcromb-box">
-                     <h3>Login Page</h3>
-                     <ul>
-                        <li><i class="fa fa-home"></i></li>
-                        <li><a href="index.html">Home</a></li>
-                        <li><i class="fa fa-angle-right"></i></li>
-                        <li>Login</li>
-                     </ul>
-                  </div>
+   <section class="gauto-breadcromb-area section_70">
+      <div class="container">
+         <div class="row">
+            <div class="col-md-12">
+               <div class="breadcromb-box">
+                  <h3>Login Page</h3>
+                  <ul>
+                     <li><i class="fa fa-home"></i></li>
+                     <li><a href="./">Home</a></li>
+                     <li><i class="fa fa-lock"></i></li>
+                     <li><a href="login">Login</a></li>
+                     <li><i class="fa fa-angle-right"></i></li>
+                     <li>Login</li>
+                  </ul>
                </div>
             </div>
          </div>
-      </section>
+      </div>
+   </section>
       <!-- Breadcromb Area End -->
        
        
@@ -34,18 +36,18 @@
                         <i class="fa fa-key"></i>
                         <h3>sign in</h3>
                      </div>
-                     <form>
+                     <form method="POST" action="handlers/registration/process-login.php" name="register">
                         <div class="account-form-group">
-                           <input type="text" placeholder="Username or Email" name="username">
+                           <input type="email" placeholder="Username or Email" name="user_name" required>
                            <i class="fa fa-user"></i>
                         </div>
                         <div class="account-form-group">
-                           <input type="password" placeholder="Password" name="password">
+                           <input type="password" placeholder="Password" name="password" required>
                            <i class="fa fa-lock"></i>
                         </div>
                         <div class="remember-row">
                            <p class="lost-pass">
-                              <a href="#">forgot password?</a>
+                              <a href="forgot-password">forgot password?</a>
                            </p>
                            <p class="checkbox remember">
                               <input class="checkbox-spin" type="checkbox" id="Freelance">
@@ -53,11 +55,11 @@
                            </p>
                         </div>
                         <p>
-                           <button type="submit" class="gauto-theme-btn">Login now</button>
+                           <button type="submit" class="gauto-theme-btn" name="login">Login now</button>
                         </p>
                      </form>
                      <div class="login-sign-up">
-                        <a href="register.html">Do you need an account?</a>
+                        <a href="register">Do you need an account?</a>
                      </div>
                   </div>
                </div>
