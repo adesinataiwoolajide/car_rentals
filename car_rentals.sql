@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 08, 2019 at 04:10 PM
+-- Generation Time: Oct 09, 2019 at 04:57 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.2.17
 
@@ -97,7 +97,12 @@ INSERT INTO `activity` (`act_id`, `action`, `user_details`, `time_added`) VALUES
 (55, 'Added floopy-6740 To The Car List', 'tolajide74@gmail.com', '2019-10-06 17:42:23'),
 (56, 'tolajide74@gmail.com Successfully Registered Account on the website', 'tolajide74@gmail.com', '2019-10-08 09:07:30'),
 (57, 'Logged Out', 'tolajide74@gmail.com', '2019-10-08 10:18:40'),
-(58, 'Logged Out', 'tolajide74@gmail.com', '2019-10-08 11:24:00');
+(58, 'Logged Out', 'tolajide74@gmail.com', '2019-10-08 11:24:00'),
+(59, 'Logged Out', 'tolajide74@gmail.com', '2019-10-08 22:38:34'),
+(60, 'Logged Out', 'tolajide74@gmail.com', '2019-10-08 22:40:25'),
+(61, 'Logged Out', 'tolajide74@gmail.com', '2019-10-08 22:40:40'),
+(62, 'tolajide75@gmail.com Successfully Registered Account on the website', 'tolajide75@gmail.com', '2019-10-08 22:41:14'),
+(63, 'Logged Out', 'tolajide75@gmail.com', '2019-10-08 22:44:11');
 
 -- --------------------------------------------------------
 
@@ -216,14 +221,20 @@ CREATE TABLE `customer_order` (
   `paystack_reference` varchar(100) DEFAULT NULL,
   `paid_status` int(1) DEFAULT NULL,
   `order_status` int(1) DEFAULT NULL,
-  `subtotal` varchar(10) DEFAULT NULL,
-  `shipping_charge` varchar(20) DEFAULT NULL,
   `amount` varchar(255) DEFAULT NULL,
-  `weight_amount` varchar(255) NOT NULL,
   `shipping` int(2) NOT NULL,
   `delivery` int(2) NOT NULL,
   `time_created` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `customer_order`
+--
+
+INSERT INTO `customer_order` (`id`, `customer_id`, `order_id`, `paystack_reference`, `paid_status`, `order_status`, `amount`, `shipping`, `delivery`, `time_created`) VALUES
+(5, 'ACB98230A5', '758930B21FB925C9', '56040f5331b0416dff13', 1, 1, '34000', 0, 0, '2019-10-08 22:07:29'),
+(6, 'ACB98230A5', '38395D72E40A863E', 'c9b5e9a2d1e4302072f9', 1, 1, '90000', 0, 0, '2019-10-08 22:36:40'),
+(7, '4184A8652E', 'B67BC79378DF8408', 'f3689d7d1788d1f56ff4', 1, 1, '34000', 0, 0, '2019-10-08 22:42:43');
 
 -- --------------------------------------------------------
 
@@ -234,11 +245,22 @@ CREATE TABLE `customer_order` (
 CREATE TABLE `customer_order_details` (
   `id` int(11) NOT NULL,
   `order_id` varchar(100) DEFAULT NULL,
-  `product_id` varchar(255) DEFAULT NULL,
+  `slug` varchar(255) DEFAULT NULL,
   `quantity` varchar(255) DEFAULT NULL,
-  `weight_pro` varchar(255) NOT NULL,
   `amount` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `customer_order_details`
+--
+
+INSERT INTO `customer_order_details` (`id`, `order_id`, `slug`, `quantity`, `amount`) VALUES
+(1, '758930B21FB925C9', 'floopy-6740', '1', 4000),
+(2, '758930B21FB925C9', 'chevo-7407', '1', 30000),
+(3, '38395D72E40A863E', 'shuffle-4507', '1', 70000),
+(4, '38395D72E40A863E', 'end-of-discussion-4215', '1', 20000),
+(5, 'B67BC79378DF8408', 'floopy-6740', '1', 4000),
+(6, 'B67BC79378DF8408', 'chevo-7407', '1', 30000);
 
 -- --------------------------------------------------------
 
@@ -261,7 +283,8 @@ CREATE TABLE `customer_registration` (
 --
 
 INSERT INTO `customer_registration` (`registration_id`, `full_name`, `user_name`, `password`, `reg_number`, `status`, `time_addes`) VALUES
-(4, 'Adesina Taiwo Olajide', 'tolajide74@gmail.com', 'b63e58a251cbdb2678919dbcd79fdc519c927304', 'ACB98230A5', 0, '2019-10-08 09:07:30');
+(4, 'Adesina Taiwo Olajide', 'tolajide74@gmail.com', 'b63e58a251cbdb2678919dbcd79fdc519c927304', 'ACB98230A5', 0, '2019-10-08 09:07:30'),
+(5, 'Testing', 'tolajide75@gmail.com', 'b63e58a251cbdb2678919dbcd79fdc519c927304', '4184A8652E', 0, '2019-10-08 22:41:14');
 
 -- --------------------------------------------------------
 
@@ -310,7 +333,8 @@ CREATE TABLE `shipping_address` (
 --
 
 INSERT INTO `shipping_address` (`id`, `customer_id`, `phone`, `address`, `landmark`, `state`, `city`) VALUES
-(4, 'ACB98230A5', '09072281204', 'Iragbiji Road Osun State', 'Oja Oba Ibadan Oyo State', 'Adamawa', 'Adamawa');
+(4, 'ACB98230A5', '09072281209', 'Iragbiji Road Osun State Nigeria', '', 'Abia', 'Abia'),
+(5, '4184A8652E', '08138139333', 'Home Address', 'Foodco Bodija', 'Bayelsa', 'Bayelsa');
 
 -- --------------------------------------------------------
 
@@ -445,7 +469,7 @@ ALTER TABLE `shipping_location_charge`
 -- AUTO_INCREMENT for table `activity`
 --
 ALTER TABLE `activity`
-  MODIFY `act_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `act_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `administrator`
@@ -475,19 +499,19 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `customer_order`
 --
 ALTER TABLE `customer_order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `customer_order_details`
 --
 ALTER TABLE `customer_order_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `customer_registration`
 --
 ALTER TABLE `customer_registration`
-  MODIFY `registration_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `registration_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `drivers`
@@ -499,7 +523,7 @@ ALTER TABLE `drivers`
 -- AUTO_INCREMENT for table `shipping_address`
 --
 ALTER TABLE `shipping_address`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `shipping_location_charge`

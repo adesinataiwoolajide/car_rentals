@@ -13,6 +13,11 @@
    $driver = new Driver();
    $brand = new Brand();
    $car = new Car();
+   $customer = new Customer();
+   $order = new Order();
+   if(!isset($_SESSION['transactionId'])){
+      $_SESSION['transactionId'] = $all_purpose->generateRandomHash(16);   
+  }
     ?>
 <!DOCTYPE html>
 <html lang="en-US">
@@ -76,9 +81,9 @@
                         Logout
                         </a>
                         
-                        <a href="dashboard">
+                        <a href="my_bookings?registration_number=<?php echo $_SESSION['reg_number'] ?>">
                         <i class="fa fa-user"></i>
-                        dashboard
+                        Bookings
                         </a><?php 
                      }else{ ?>
                         <a href="login">
@@ -156,11 +161,11 @@
                      <nav>
                         <ul id="gauto_navigation">
                            <li class=""><a href="./">home</a></li>
-                           <li class=""><a href="aboutus">About</a></li>
-                           
-                           <li class=""><a href="services.php">services</a></li>
+                           <!-- <li class=""><a href="aboutus">About</a></li> -->
+<!--                            
+                           <li class=""><a href="services.php">services</a></li> -->
                            <li class=""><a href="cars">cars</a></li>
-                           <li class=""><a href="gallery">gallery</a></li>
+                           <!-- <li class=""><a href="gallery">gallery</a></li> -->
                            <li class=""><a href="team"> Our Team</a></li>
                            
                            <li>
@@ -180,7 +185,16 @@
                                  } ?>
                                  
                               </ul>
-                           </li>
+                           </li><?php
+                           if(isset($_SESSION['id'])){?>
+                              <li class=""><a href="shipping-address">Shipping </a></li><?php 
+                           } ?>
+                           <?php
+                           if(isset($_SESSION['cart'])){?>
+                              
+                              <li class=""><a href="shopping-cart">Cart</a></li>
+                              <li class=""><a href="checkout">Check Out</a></li><?php
+                           } ?>
 
                            <li class=""><a href="contactus">contact us</a></li>
                            

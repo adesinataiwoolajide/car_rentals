@@ -33,7 +33,7 @@
 					$all_purpose->redirect("../../shipping-address");
 				}else{
 					$_SESSION['success'] = "Login successfull";
-					$all_purpose->redirect("../.././dashboard");
+					$all_purpose->redirect("../.././my_bookings?registration_number=$reg_number");
 				}
 				
 			}

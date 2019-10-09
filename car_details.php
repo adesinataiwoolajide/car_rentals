@@ -83,7 +83,7 @@
                               <input type="hidden" name="name" value="<?php echo $details['name']; ?>">
                               <input type="hidden" name="quantity" value="<?php echo 1 ?>">
                               <input type="hidden" name="return" value="<?php $_SERVER['REQUEST_URI'] ?>">
-                              <button type="submit" class="gauto-btn"><i class="fa fa-shopping-cart"></i> book the car</button>
+                              <button type="submit" class="gauto-theme-btn"><i class="fa fa-shopping-cart"></i> book the car</button>
                            <form><?php 
                         }else{?>
                             <a href="" class="gauto-btn"><i class="fa fa-cancel"></i> Not available for bookings</a><?php 

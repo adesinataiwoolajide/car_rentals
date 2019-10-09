@@ -11,7 +11,7 @@
                      <h3>Contact Us</h3>
                      <ul>
                         <li><i class="fa fa-home"></i></li>
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="./">Home</a></li>
                         <li><i class="fa fa-angle-right"></i></li>
                         <li>Contact Us</li>
                      </ul>

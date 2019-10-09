@@ -23,7 +23,10 @@
                   <h3>Checkout</h3>
                   <ul>
                      <li><i class="fa fa-home"></i></li>
-                     <li><a href="index.html">Home</a></li>
+                     <li><a href="./">Home</a></li>
+                     <li><i class="fa fa-angle-right"></i></li>
+                     <li><i class="fa fa-list"></i></li>
+                     <li><a href="checkout">Check Out</a></li>
                      <li><i class="fa fa-angle-right"></i></li>
                      <li>Checkout</li>
                   </ul>
@@ -44,18 +47,19 @@
                      <h3>Billing Details</h3> <?php 
                      if($counting > 0){
                         foreach ($shippingDetails as$getAddress ){ ?>
-                           <form>
+                           <form action="handlers/shipping/update-shipping-address.php" method="POST">
                               <div class="row checkout-form">
                                  <div class="col-md-6">
                                     <label for="name23">First Name</label>
-                                    <input type="text" name="firstname" id="name23" value="<?php echo $_SESSION['name'] ?>" readonly>
+                                    <input type="text" name="name" id="name23" value="<?php echo $_SESSION['name'] ?>" readonly>
                                  </div>
                                  <div class="col-md-6">
                                     <label for="cntr2">Country</label>
-                                    <input type="text" name="country" id="cntr2" value="Nigeria">
+                                    <input type="text" name="country" id="cntr2" value="Nigeria" readonly>
                                  </div>
                                  
                               </div>
+                              <input type="hidden" name="customer_id" value="<?php echo $getAddress['customer_id'] ?>">
                               <div class="row checkout-form">
                                  <div class="col-md-6">
                                     <label for="info2">Email Address *</label>
@@ -63,7 +67,7 @@
                                  </div>
                                  <div class="col-md-6">
                                     <label for="info2">Mobile Number *</label>
-                                    <input type="text" name="info2" id="info12" value="<?php echo $getAddress['phone'] ?>">
+                                    <input type="text" name="phone" id="info12" value="<?php echo $getAddress['phone'] ?>">
                                  </div>
                               </div>
                               
@@ -75,17 +79,30 @@
                               </div>
                               <div class="row checkout-form">
                                  <div class="col-md-12">
-                                    <label for="Town2">Town / City *</label>
-                                    <input type="text" name="town" id="Town2" value="<?php echo $getAddress['state'] ?>">
+                                    <!-- <label for="Town2">Town / City *</label> -->
+                                   
+                                    <select name="state" required id="Town2">
+                                    <option value="<?php echo $getAddress['state'] ?>"><?php echo $getAddress['state'] ?> </option>
+                                        <option value=""> </option><?php 
+                                        $zone = $db->prepare("SELECT * FROM shipping_location_charge ORDER BY location ASC");
+                                        $zone->execute(); 
+                                        while($see_state = $zone->fetch()){ ?>
+                                            <option value="<?php echo $see_state['location']; ?>"><?php echo $see_state['location']; ?></option><?php  
+                                        } ?>
+
+                                    </select>
                                  </div>
-                              </div>
+                              </div> <br>
                              
-                              <div class="row checkout-form">
+                              <!-- <div class="row checkout-form">
                                  <div class="col-md-12">
                                     <label for="info2">Order Note *</label>
                                     <textarea name="ordernote"></textarea>
                                  </div>
-                              </div>
+                              </div> -->
+                              <p>
+                                <button type="submit" class="gauto-theme-btn" name="update-address">Update shipping Address</button>
+                                </p>
                            </form><?php 
                         } 
                      }else{ ?>
@@ -93,66 +110,100 @@
                         <?php
                      } ?>
                   </div>
-               </div>
-               <div class="col-lg-4">
-                  <div class="order-summury-box">
-                     <h3>Order Summury</h3>
-                     <table>
-                        <tbody>
-                           <tr>
-                              <td>Cart Subtotal</td>
-                              <td>$270</td>
-                           </tr>
-                           <tr>
-                              <td>Shipping and Handling</td>
-                              <td>Free Shipping</td>
-                           </tr>
-                           <tr>
-                              <td>Order Total</td>
-                              <td>$270</td>
-                           </tr>
-                        </tbody>
-                     </table>
-                  </div>
-                  <div class="booking-right">
-                     <div class="gauto-payment clearfix">
-                        <div class="payment">
-                           <input type="radio" id="ss-option" name="selector">
-                           <label for="ss-option">Direct Bank Transfer</label>
-                           <div class="check">
-                              <div class="inside"></div>
+               </div> <?php
+               if(!empty($_SESSION['cart'])){ 
+                  $cart = $_SESSION['cart'];
+                  $count = count($cart);
+                  $reg_number = $_SESSION['reg_number'];
+                  $shipLocation = $register->getShippinCusgAddress($reg_number); 
+                  $state = $shipLocation['state']; 
+                  $shipAmount = $register->getShippinLocationMoney($state); 
+                  $shippingFee = $shipAmount['charge']; 
+                  $total = array();
+                  foreach($_SESSION['cart'] as $item){
+                     $slug = $item['slug'];
+                     $details = $car->getSingleCar($item['slug']); 
+                     $cal = $item['amount'] * $item['quantity'];
+
+                     array_push($total, $cal);
+                  } ?>
+                  <div class="col-lg-4">
+                     <div class="order-summury-box">
+                        <h3>Order Summury</h3>
+                        <table>
+                           <tbody>
+                              <tr>
+                                 <td>Cart Subtotal</td>
+                                 <td>&#8358;<?php echo number_format(array_sum($total)); ?></td>
+                              </tr>
+                              <tr>
+                                 <td>Shipping and Handling</td>
+                                 <td>Free Shipping</td>
+                              </tr>
+                              <tr>
+                                 <td>Order Total</td>
+                                 <td>&#8358;<?php echo number_format(array_sum($total)); ?></td>
+                              </tr>
+                           </tbody>
+                        </table>
+                     </div>
+                     <div class="booking-right">
+                        <div class="gauto-payment clearfix">
+                           <div class="payment">
+                              <input type="radio" id="ss-option" name="selector">
+                              <label for="ss-option">Direct Bank Transfer</label>
+                              <div class="check">
+                                 <div class="inside"></div>
+                              </div>
+                              <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference..</p>
                            </div>
-                           <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference.order won’t be shipped until the funds have cleared.</p>
+                           
                         </div>
-                        <div class="payment">
-                           <input type="radio" id="f-option" name="selector">
-                           <label for="f-option">Cheque Payment</label>
-                           <div class="check">
-                              <div class="inside"></div>
-                           </div>
-                        </div>
-                        <div class="payment">
-                           <input type="radio" id="s-option" name="selector">
-                           <label for="s-option">Credit Card</label>
-                           <div class="check">
-                              <div class="inside"></div>
-                           </div>
-                           <img src="assets/img/master-card.jpg" alt="credit card">
-                        </div>
-                        <div class="payment">
-                           <input type="radio" id="t-option" name="selector">
-                           <label for="t-option">Paypal</label>
-                           <div class="check">
-                              <div class="inside"></div>
-                           </div>
-                           <img src="assets/img/paypal.jpg" alt="credit card">
+                        <div class="action-btn">
+                           <form action="handlers/orders/saveOrder.php" method="post" id="self">
+                              <script src='https://js.paystack.co/v1/inline.js'></script>
+                              <input type="hidden" name="total" value="<?php echo  array_sum($total); ?>"  >
+                              <input type="hidden" name="email" id="email" value="<?php echo $_SESSION['user_name']; ?>">
+                              
+                              <?php 
+                              if($counting ==0){ ?>
+                                 <a href="shipping-address" class="gauto-btn">Make Payment</a> <?php 
+                              }else{ ?>
+                                 <button class="gauto-theme-btn" type="submit" name="submit">
+                                 Proceed to Payment</button> <?php 
+                              } ?>
+                              
+                              </div>
+                           </form>
+                           <script> 
+                              // function payWithPaystack(){
+
+                              //    var handler = PaystackPop.setup({
+                              //       key: 'sk_test_3ab911f611cb52cd9ac47d872263f96536b6cb2b',
+                              //       email: '<?php echo $_SESSION['user_name']; ?>',
+                              //       amount: <?php echo  array_sum($total); ?>,
+                              //       re: ''+Math.floor((Math.random() * 1000000000) +1)
+                              //       metadata: {
+                              //          custome_fields : [
+                              //             {
+                              //                display_name: "08138139333",
+                              //                variable_name: "09072281204",
+                              //                value: ""
+                              //             }
+                              //          ]
+                              //       },
+                              //       callback: function(response){
+                              //          alert('window closed');
+                              //       }
+                              //    });
+                              //    handler.openIframe();
+                              // }
+                           </script>
+                           
                         </div>
                      </div>
-                     <div class="action-btn">
-                        <a href="#" class="gauto-btn">place order</a>
-                     </div>
-                  </div>
-               </div>
+                  </div><?php 
+               } ?>
             </div>
          </div>
       </section>
